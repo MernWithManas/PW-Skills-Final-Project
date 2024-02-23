@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import toast from 'react-hot-toast'
 
 const App = () => {
+  
+
   return (
-    <div>Hello</div>
+    <div className='bg-red-500'>Hello</div>
   )
 }
 
