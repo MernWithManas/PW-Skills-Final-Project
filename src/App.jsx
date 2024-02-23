@@ -1,12 +1,16 @@
+// eslint-disable-next-line no-unused-vars
 import React from "react"
 
-React
+import Footer from "./components/Footer"
+
 
 const App = () => {
   
 
   return (
-    <div className='bg-red-500'>Hello</div>
+    <>
+      <Footer/>
+    </>
   )
 }
 
