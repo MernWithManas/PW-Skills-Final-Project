@@ -1,10 +1,17 @@
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FiMenu } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 import Footer from "../components/Footer";
 
 function HomeLayout({ children }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
+  const role = useSelector((state) => state?.auth?.role);
+
   function changeWidth() {
     const drawerSide = document.getElementsByClassName("drawer-side");
     drawerSide[0].style.width = "auto";
@@ -16,6 +23,14 @@ function HomeLayout({ children }) {
     const drawerSide = document.getElementsByClassName("drawer-side");
     drawerSide[0].style.width = "0";
   }
+
+  function onLogout(e) {
+    e.preventDefault();
+
+    // todo
+    navigate("/");
+  }
+
   return (
     <>
       <div className="min-h-[90vh]">
@@ -41,6 +56,11 @@ function HomeLayout({ children }) {
               <li>
                 <Link to="/"> Home </Link>
               </li>
+              {isLoggedIn && role == "ADMIN" && (
+                <li>
+                  <Link to="/admin/dashboard">Admin Dashboard</Link>
+                </li>
+              )}
               <li>
                 <Link to="/about"> About </Link>
               </li>
@@ -50,12 +70,35 @@ function HomeLayout({ children }) {
               <li>
                 <Link to="/courses"> All Courses </Link>
               </li>
+              {!isLoggedIn ? (
+                <li className="absolute bottom-4 w-[90%]">
+                  <div className="flex items-center justify-center w-full">
+                    <button className="w-full px-4 py-1 font-semibold text-white bg-purple-500 rounded-md hover:bg-purple-700">
+                      <Link to="/signin">Login</Link>
+                    </button>
+                    <button className="w-full px-4 py-1 font-semibold text-white bg-pink-500 rounded-md hover:bg-pink-700">
+                      <Link to="/signup">Signup</Link>
+                    </button>
+                  </div>
+                </li>
+              ) : (
+                <li className="absolute bottom-4 w-[90%]">
+                  <div className="flex items-center justify-center w-full">
+                    <button className="w-full px-4 py-1 font-semibold text-white bg-purple-500 rounded-md hover:bg-purple-700">
+                      <Link to="/user/profile">Profile</Link>
+                    </button>
+                    <button className="w-full px-4 py-1 font-semibold text-white bg-pink-500 rounded-md hover:bg-pink-700">
+                      <Link onClick={onLogout}>Logout</Link>
+                    </button>
+                  </div>
+                </li>
+              )}
             </ul>
           </div>
         </div>
 
         {children}
-        <Footer/>
+        <Footer />
       </div>
     </>
   );
